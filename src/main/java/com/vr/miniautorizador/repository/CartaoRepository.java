@@ -9,4 +9,5 @@ import java.util.Optional;
 @Repository
 public interface CartaoRepository extends JpaRepository<Cartao, Long> {
     Optional<Cartao> findByNumero(String numero);
+    Optional<Cartao> findByNumeroAndSenha(String numero, String senha);
 }

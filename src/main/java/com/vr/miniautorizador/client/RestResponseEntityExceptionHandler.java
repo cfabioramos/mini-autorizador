@@ -28,6 +28,11 @@ public class RestResponseEntityExceptionHandler {
     }
 
     //422 Unprocessable
+
+    /*
+     * Poderia também ter criado outro método para tratar o retorno 422,
+     * mas acredito que apenas esse seja suficiente para validar o conhecimento. Ok?
+     */
     @ExceptionHandler({IllegalArgumentException.class})
     public ResponseEntity<Object> handleUnprocessableRequestException(final IllegalArgumentException ex, final WebRequest request) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);

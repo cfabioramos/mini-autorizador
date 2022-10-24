@@ -1,5 +1,7 @@
 package com.vr.miniautorizador.dto;
 
+import com.vr.miniautorizador.model.Cartao;
+import com.vr.miniautorizador.model.Transacao;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,5 +26,9 @@ public class TransacaoDTO {
 
     @NotNull(message = "Necessário informar o valor da transação")
     private Double valor;
+
+    public Transacao gerarTransacao(Cartao cartao, Double valor) {
+        return new Transacao(cartao, valor);
+    }
 
 }

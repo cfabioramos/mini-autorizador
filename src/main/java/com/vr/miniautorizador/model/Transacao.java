@@ -11,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -22,6 +23,7 @@ public class Transacao {
     public Transacao(Cartao cartao, Double valor) {
         this.cartao = cartao;
         this.valor = valor;
+        this.dataTransacao = LocalDateTime.now();
     }
 
     @Id
@@ -33,5 +35,7 @@ public class Transacao {
     @ManyToOne
     @JoinColumn(name = "cartao_id")
     private Cartao cartao;
+
+    private LocalDateTime dataTransacao;
 
 }
