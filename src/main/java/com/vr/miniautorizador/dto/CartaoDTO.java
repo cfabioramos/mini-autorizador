@@ -22,7 +22,7 @@ public class CartaoDTO {
     @NotBlank(message = "Necessário informar a senha do cartão")
     private String senha;
 
-    public Cartao getModel() {
+    public Cartao generateModel() {
         return new Cartao(numero, senha);
     }
 

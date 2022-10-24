@@ -1,6 +1,8 @@
 package com.vr.miniautorizador.controller;
 
 import com.vr.miniautorizador.dto.CartaoDTO;
+import com.vr.miniautorizador.repository.CartaoRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +17,9 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping("cartoes")
 public class CartaoController {
+
+    @Autowired
+    private CartaoRepository repository;
 
     @PostMapping
     public ResponseEntity<CartaoDTO> criarCartao(@Valid @RequestBody CartaoDTO cartaoDTO) {
