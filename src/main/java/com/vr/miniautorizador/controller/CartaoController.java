@@ -37,7 +37,12 @@ public class CartaoController {
 
     @GetMapping("{numeroCartao}")
     public ResponseEntity<Object> obterSaldoCartao(@PathVariable String numeroCartao) {
-        return ResponseEntity.ok().body(numeroCartao);
+
+        Optional<Cartao> cartaoOptional = repository.findByNumero(numeroCartao);
+        Cartao cartaoModel = cartaoOptional.orElseThrow(() ->
+                new IllegalArgumentException("O Número informado não corresponde a um cartão existente."));
+
+        return ResponseEntity.ok().body(cartaoModel.getSaldo());
     }
 
 }
