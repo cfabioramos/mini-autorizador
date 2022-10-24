@@ -1,11 +1,13 @@
 package com.vr.miniautorizador.client;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.context.request.WebRequest;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -24,4 +26,11 @@ public class RestResponseEntityExceptionHandler {
         });
         return errors;
     }
+
+    //422 Unprocessable
+    @ExceptionHandler({IllegalArgumentException.class})
+    public ResponseEntity<Object> handleUnprocessableRequestException(final IllegalArgumentException ex, final WebRequest request) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
+    }
+
 }

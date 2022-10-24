@@ -24,9 +24,10 @@ import javax.persistence.UniqueConstraint;
 )
 public class Cartao {
 
-    public Cartao(String numero, String senha) {
+    public Cartao(String numero, String senha, Double saldo) {
         this.numero = numero;
         this.senha = senha;
+        this.saldo = saldo;
     }
 
     @Id

@@ -16,14 +16,19 @@ import javax.validation.constraints.NotBlank;
 @ToString
 public class CartaoDTO {
 
+    public CartaoDTO(Cartao cartao) {
+        this.numero = cartao.getNumero();
+        this.senha = cartao.getSenha();
+    }
+
     @NotBlank(message = "Necessário informar o número do cartão")
     private String numero;
 
     @NotBlank(message = "Necessário informar a senha do cartão")
     private String senha;
 
-    public Cartao generateModel() {
-        return new Cartao(numero, senha);
+    public Cartao gerarCartaoInicial() {
+        return new Cartao(numero, senha, 500D);
     }
 
 }
