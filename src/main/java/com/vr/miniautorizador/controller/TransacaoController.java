@@ -7,13 +7,13 @@ import com.vr.miniautorizador.repository.TransacaoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
-import java.math.BigDecimal;
 import java.util.Optional;
 
 @RestController
@@ -27,15 +27,25 @@ public class TransacaoController {
     private CartaoRepository cartaoRepository;
 
     @PostMapping
+    @Transactional
     public ResponseEntity<TransacaoDTO> efetivarTransacao(@Valid @RequestBody TransacaoDTO transacaoDTO) {
 
         Cartao cartaoModel = validaDadosCartao(transacaoDTO);
 
         validaSaldoCartao(transacaoDTO, cartaoModel);
 
-        debitaSaldoCartao(transacaoDTO, cartaoModel);
+        // Aqui obtenho o lock exclusivo de escrita de ambas as tabelas (transacao e cartao)
+        /*
+            Outra regra que pode ser adicionada
+            para garantir que duas transações disparadas ao mesmo tempo
+            não causem problemas relacionados à concorrência é um insert select
+            na tabela transacao
+         */
+        repository.lockTables();
 
         repository.save(transacaoDTO.gerarTransacao(cartaoModel, transacaoDTO.getValor()));
+
+        debitaSaldoCartao(transacaoDTO, cartaoModel);
 
         return new ResponseEntity<TransacaoDTO>(transacaoDTO, HttpStatus.CREATED);
     }
@@ -47,7 +57,7 @@ public class TransacaoController {
                 new IllegalArgumentException("CARTAO_INEXISTENTE"));
 
         cartaoOptional = cartaoRepository.findByNumeroAndSenha(
-                        transacaoDTO.getNumeroCartao(), transacaoDTO.getSenhaCartao());
+                transacaoDTO.getNumeroCartao(), transacaoDTO.getSenhaCartao());
         cartaoModel = cartaoOptional.orElseThrow(() ->
                 new IllegalArgumentException("SENHA_INVALIDA"));
         return cartaoModel;
