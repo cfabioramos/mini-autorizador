@@ -1,5 +1,6 @@
 package com.vr.miniautorizador.dto;
 
+import com.vr.miniautorizador.model.Cartao;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,5 +21,9 @@ public class CartaoDTO {
 
     @NotBlank(message = "Necessário informar a senha do cartão")
     private String senha;
+
+    public Cartao getModel() {
+        return new Cartao(numero, senha);
+    }
 
 }
