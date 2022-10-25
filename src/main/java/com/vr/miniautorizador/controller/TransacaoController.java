@@ -47,6 +47,8 @@ public class TransacaoController {
 
         debitaSaldoCartao(transacaoDTO, cartaoModel);
 
+        repository.releaseTables();
+
         return new ResponseEntity<TransacaoDTO>(transacaoDTO, HttpStatus.CREATED);
     }
 

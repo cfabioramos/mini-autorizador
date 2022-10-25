@@ -13,4 +13,8 @@ public interface TransacaoRepository extends JpaRepository<Transacao, Long> {
     @Modifying
     void lockTables();
 
+    @Query(value = "UNLOCK TABLES", nativeQuery = true)
+    @Modifying
+    void releaseTables();
+
 }
